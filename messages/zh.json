@@ -1,0 +1,103 @@
+{
+  "common": {
+    "upload": "上传",
+    "download": "下载",
+    "downloadAll": "全部下载",
+    "processing": "处理中...",
+    "dragAndDrop": "拖拽文件到此处或点击选择",
+    "supportedFormats": "支持格式",
+    "fileSize": "文件大小",
+    "originalSize": "原始大小",
+    "compressedSize": "压缩后大小",
+    "width": "宽度",
+    "height": "高度",
+    "quality": "质量",
+    "format": "格式",
+    "cancel": "取消",
+    "reset": "重置",
+    "apply": "应用",
+    "clearAll": "清空全部",
+    "selectedFiles": "已选文件",
+    "converting": "转换中...",
+    "startConversion": "开始转换",
+    "applyNewFormat": "应用新格式",
+    "remove": "移除",
+    "savings": "节省",
+    "compressingImages": "压缩图片中...",
+    "clearAll": "清除全部"
+  },
+  "navigation": {
+    "home": "首页",
+    "compress": "图片压缩",
+    "resize": "调整大小",
+    "convert": "格式转换",
+    "svgEditor": "SVG编辑器"
+  },
+  "home": {
+    "title": "TransPic",
+    "subtitle": "免费、快速、私密的图片处理工具",
+    "description": "在浏览器中完全处理您的图片 - 无广告，无隐私担忧。",
+    "features": {
+      "compress": {
+        "title": "图片压缩",
+        "description": "在保持质量的同时减小文件大小"
+      },
+      "resize": {
+        "title": "调整大小",
+        "description": "精确调整图片尺寸，支持锁定长宽比"
+      },
+      "convert": {
+        "title": "格式转换",
+        "description": "在不同图片格式之间转换"
+      },
+      "svgEditor": {
+        "title": "SVG编辑器",
+        "description": "编辑SVG代码并导出为栅格格式"
+      }
+    }
+  },
+  "compress": {
+    "title": "图片压缩",
+    "description": "在保持视觉质量的同时减小文件大小",
+    "qualityLabel": "压缩质量",
+    "batchProcessing": "批量处理",
+    "startCompression": "开始压缩",
+    "compressing": "压缩中...",
+    "recompressing": "重新压缩中...",
+    "qualityChanged": "质量设置已更改。点击以新质量 ({quality}%) 重新压缩。"
+  },
+  "resize": {
+    "title": "调整图片大小",
+    "description": "精确调整图片尺寸",
+    "lockAspectRatio": "锁定长宽比",
+    "customSize": "自定义尺寸",
+    "startResize": "开始调整大小",
+    "resizing": "调整大小中..."
+  },
+  "convert": {
+    "title": "格式转换",
+    "description": "在不同图片和文档格式之间转换",
+    "outputFormat": "输出格式",
+    "pageNumber": "页码",
+    "formatChanged": "输出格式已更改为 {format}。点击以使用新格式转换。"
+  },
+  "svgEditor": {
+    "title": "SVG编辑器",
+    "description": "编辑SVG代码并实时预览",
+    "uploadSvg": "上传SVG",
+    "codeEditor": "代码编辑器",
+    "preview": "预览",
+    "downloadSvg": "下载SVG",
+    "downloadPng": "下载PNG",
+    "downloadJpg": "下载JPG"
+  },
+  "theme": {
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  }
+}

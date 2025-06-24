@@ -1,0 +1,103 @@
+{
+  "common": {
+    "upload": "Upload",
+    "download": "Download",
+    "downloadAll": "Download All",
+    "processing": "Processing...",
+    "dragAndDrop": "Drag and drop files here or click to select",
+    "supportedFormats": "Supported formats",
+    "fileSize": "File size",
+    "originalSize": "Original size",
+    "compressedSize": "Compressed size",
+    "width": "Width",
+    "height": "Height",
+    "quality": "Quality",
+    "format": "Format",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "apply": "Apply",
+    "clearAll": "Clear All",
+    "selectedFiles": "Selected Files",
+    "converting": "Converting...",
+    "startConversion": "Start Conversion",
+    "applyNewFormat": "Apply New Format",
+    "remove": "Remove",
+    "savings": "Savings",
+    "compressingImages": "Compressing images...",
+    "clearAll": "Clear All"
+  },
+  "navigation": {
+    "home": "Home",
+    "compress": "Compress",
+    "resize": "Resize", 
+    "convert": "Convert",
+    "svgEditor": "SVG Editor"
+  },
+  "home": {
+    "title": "TransPic",
+    "subtitle": "Free, Fast, Private Image Processing Tools",
+    "description": "Process your images entirely in your browser - no ads, no privacy concerns.",
+    "features": {
+      "compress": {
+        "title": "Image Compression",
+        "description": "Reduce file size while maintaining quality"
+      },
+      "resize": {
+        "title": "Resize Images", 
+        "description": "Adjust dimensions with aspect ratio control"
+      },
+      "convert": {
+        "title": "Format Conversion",
+        "description": "Convert between different image formats"
+      },
+      "svgEditor": {
+        "title": "SVG Editor",
+        "description": "Edit SVG code and export to raster formats"
+      }
+    }
+  },
+  "compress": {
+    "title": "Image Compression",
+    "description": "Reduce file size while maintaining visual quality",
+    "qualityLabel": "Compression Quality",
+    "batchProcessing": "Batch Processing",
+    "startCompression": "Start Compression",
+    "compressing": "Compressing...",
+    "recompressing": "Recompressing...",
+    "qualityChanged": "Quality setting changed. Click to recompress with new quality ({quality}%)."
+  },
+  "resize": {
+    "title": "Resize Images",
+    "description": "Adjust image dimensions with precision",
+    "lockAspectRatio": "Lock aspect ratio",
+    "customSize": "Custom Size",
+    "startResize": "Start Resize",
+    "resizing": "Resizing..."
+  },
+  "convert": {
+    "title": "Format Conversion",
+    "description": "Convert between different image and document formats",
+    "outputFormat": "Output Format",
+    "pageNumber": "Page Number",
+    "formatChanged": "Output format changed to {format}. Click to convert with new format."
+  },
+  "svgEditor": {
+    "title": "SVG Editor",
+    "description": "Edit SVG code and preview in real-time",
+    "uploadSvg": "Upload SVG",
+    "codeEditor": "Code Editor",
+    "preview": "Preview",
+    "downloadSvg": "Download SVG",
+    "downloadPng": "Download PNG",
+    "downloadJpg": "Download JPG"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  }
+}
