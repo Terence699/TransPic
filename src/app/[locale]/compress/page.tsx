@@ -40,7 +40,7 @@ export default function CompressPage() {
           <FileUpload
             onFilesSelected={handleFilesSelected}
             acceptedTypes={['image/jpeg', 'image/png', 'image/webp']}
-            maxFileSize={10}
+            maxFileSize={25}
             multiple={true}
             className="mb-8"
             files={selectedFiles}

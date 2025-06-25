@@ -35,7 +35,7 @@ const mimeTypeToExtension = (mimeTypes: string[]): string[] => {
 export function FileUpload({
   onFilesSelected,
   acceptedTypes = ['image/*'],
-  maxFileSize = 10,
+  maxFileSize = 25,
   multiple = true,
   className = '',
   files = [],

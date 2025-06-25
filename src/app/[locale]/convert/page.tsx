@@ -40,7 +40,7 @@ export default function ConvertPage() {
           <FileUpload
             onFilesSelected={handleFilesSelected}
             acceptedTypes={['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']}
-            maxFileSize={10}
+            maxFileSize={25}
             multiple={true}
             className="mb-8"
             files={selectedFiles}

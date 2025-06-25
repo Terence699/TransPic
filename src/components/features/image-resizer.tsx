@@ -198,14 +198,6 @@ export function ImageResizer({ files, onRemoveFile, onClearAll }: ImageResizerPr
     }
   }, [resizedImages, resizeAllImages]);
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
   const downloadImage = useCallback((imageData: ResizedImage) => {
     if (!imageData.resized) return;
 
@@ -382,13 +374,6 @@ export function ImageResizer({ files, onRemoveFile, onClearAll }: ImageResizerPr
                       {imageData.targetDimensions.width} × {imageData.targetDimensions.height}
                     </span>
                   </div>
-                  <span className={`font-medium ${
-                    imageData.resized && !imageData.isProcessing && !imageData.error
-                      ? 'text-green-600'
-                      : 'text-muted-foreground'
-                  }`}>
-                    ({formatFileSize(imageData.original.size)})
-                  </span>
                 </div>
               </div>
 
