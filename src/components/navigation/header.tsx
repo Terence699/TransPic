@@ -4,10 +4,11 @@ import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LanguageToggle } from '@/components/ui/language-toggle';
-import { 
-  ImageIcon, 
-  Maximize2, 
-  RefreshCw, 
+import Image from 'next/image';
+import {
+  ImageIcon,
+  Maximize2,
+  RefreshCw,
   Code2,
   Menu,
   X
@@ -53,8 +54,15 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
+            <div className="w-8 h-8 rounded-lg overflow-hidden">
+              <Image
+                src="/logo-32.png"
+                alt="TransPic Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-contain"
+                priority
+              />
             </div>
             <span className="font-bold text-xl" style={{ color: 'var(--foreground)' }}>TransPic</span>
           </Link>

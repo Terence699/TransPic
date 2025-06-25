@@ -64,15 +64,71 @@ export function FormatConverter({ files, onRemoveFile, onClearAll }: FormatConve
 
   }, [files, outputFormat]);
 
+  const convertPdfToImage = useCallback(async (
+    file: File,
+    targetFormat: string,
+    pageNumber: number = 1
+  ): Promise<File> => {
+    try {
+      // Dynamic import to avoid SSR issues
+      const pdfjsLib = await import('pdfjs-dist');
+
+      // Ensure worker is set up
+      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+      }
+
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const page = await pdf.getPage(pageNumber);
+
+      const scale = 2.0; // Higher scale for better quality
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      if (!context) {
+        throw new Error('Failed to get canvas context');
+      }
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+
+      return new Promise((resolve, reject) => {
+        const targetMimeType = OUTPUT_FORMATS.find(f => f.value === targetFormat)?.mimeType || 'image/png';
+        const quality = targetFormat === 'jpeg' ? 0.9 : undefined;
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const fileName = file.name.replace(/\.pdf$/i, `.${targetFormat}`);
+            const convertedFile = new File([blob], fileName, { type: targetMimeType });
+            resolve(convertedFile);
+          } else {
+            reject(new Error('Failed to create blob'));
+          }
+        }, targetMimeType, quality);
+      });
+    } catch (error) {
+      throw new Error(`PDF conversion failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }, []);
+
   const convertImage = useCallback(async (
     file: File,
-    targetFormat: string
+    targetFormat: string,
+    pageNumber?: number
   ): Promise<File> => {
     return new Promise((resolve, reject) => {
       if (file.type === 'application/pdf') {
-        // For PDF files, we would need pdf.js here
-        // For now, we'll just reject with an error
-        reject(new Error('PDF conversion not implemented yet'));
+        convertPdfToImage(file, targetFormat, pageNumber || 1)
+          .then(resolve)
+          .catch(reject);
         return;
       }
 
@@ -117,7 +173,7 @@ export function FormatConverter({ files, onRemoveFile, onClearAll }: FormatConve
       img.onerror = () => reject(new Error('Failed to load image'));
       img.src = URL.createObjectURL(file);
     });
-  }, []);
+  }, [convertPdfToImage]);
 
   const convertAllFiles = useCallback(async () => {
     setIsProcessingAll(true);
@@ -139,7 +195,8 @@ export function FormatConverter({ files, onRemoveFile, onClearAll }: FormatConve
         try {
           const converted = await convertImage(
             fileData.original,
-            outputFormat
+            outputFormat,
+            fileData.pageNumber
           );
           
           return {

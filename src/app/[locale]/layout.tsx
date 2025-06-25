@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 import { ToastProvider } from '@/components/ui/toast';
+import { PDFProvider } from '@/components/providers/pdf-provider';
 import "../globals.css";
 
 const inter = Inter({
@@ -36,7 +37,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -44,9 +45,11 @@ export default async function LocaleLayout({
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <ToastProvider>
-              {children}
-            </ToastProvider>
+            <PDFProvider>
+              <ToastProvider>
+                {children}
+              </ToastProvider>
+            </PDFProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
