@@ -365,15 +365,30 @@ export function ImageResizer({ files, onRemoveFile, onClearAll }: ImageResizerPr
                 <h3 className="text-sm font-medium text-foreground truncate">
                   {imageData.original.name}
                 </h3>
-                <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                  <span>
+                <div className="flex items-center gap-4 mt-2 text-xs">
+                  <span className="text-muted-foreground font-medium">
                     {imageData.originalDimensions.width} × {imageData.originalDimensions.height}
                   </span>
-                  <span>→</span>
-                  <span>
-                    {imageData.targetDimensions.width} × {imageData.targetDimensions.height}
+                  <span className="text-muted-foreground">→</span>
+                  <div className="flex items-center gap-1">
+                    {imageData.resized && !imageData.isProcessing && !imageData.error && (
+                      <span className="text-green-600">✅</span>
+                    )}
+                    <span className={`font-semibold ${
+                      imageData.resized && !imageData.isProcessing && !imageData.error
+                        ? 'text-green-600'
+                        : 'text-muted-foreground'
+                    }`}>
+                      {imageData.targetDimensions.width} × {imageData.targetDimensions.height}
+                    </span>
+                  </div>
+                  <span className={`font-medium ${
+                    imageData.resized && !imageData.isProcessing && !imageData.error
+                      ? 'text-green-600'
+                      : 'text-muted-foreground'
+                  }`}>
+                    ({formatFileSize(imageData.original.size)})
                   </span>
-                  <span>({formatFileSize(imageData.original.size)})</span>
                 </div>
               </div>
 

@@ -193,13 +193,7 @@ export function FormatConverter({ files, onRemoveFile, onClearAll }: FormatConve
 
 
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+
 
   const downloadFile = useCallback((fileData: ConvertedFile) => {
     if (!fileData.converted) return;
@@ -342,11 +336,21 @@ export function FormatConverter({ files, onRemoveFile, onClearAll }: FormatConve
                 <h3 className="text-sm font-medium text-foreground truncate">
                   {fileData.original.name}
                 </h3>
-                <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                  <span>{mimeTypeToFormat(fileData.original.type)}</span>
-                  <span>→</span>
-                  <span>{OUTPUT_FORMATS.find(f => f.value === fileData.outputFormat)?.label}</span>
-                  <span>({formatFileSize(fileData.original.size)})</span>
+                <div className="flex items-center gap-4 mt-2 text-xs">
+                  <span className="text-muted-foreground font-medium">{mimeTypeToFormat(fileData.original.type)}</span>
+                  <span className="text-muted-foreground">→</span>
+                  <div className="flex items-center gap-1">
+                    {fileData.converted && !fileData.isProcessing && !fileData.error && (
+                      <span className="text-green-600">✅</span>
+                    )}
+                    <span className={`font-semibold ${
+                      fileData.converted && !fileData.isProcessing && !fileData.error
+                        ? 'text-green-600'
+                        : 'text-muted-foreground'
+                    }`}>
+                      {OUTPUT_FORMATS.find(f => f.value === fileData.outputFormat)?.label}
+                    </span>
+                  </div>
                 </div>
                 
                 {/* PDF Page Number Selector */}

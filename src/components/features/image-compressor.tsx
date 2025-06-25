@@ -59,18 +59,81 @@ export function ImageCompressor({ files, onRemoveFile, onClearAll }: ImageCompre
   }, [quality, isInputFocused]);
 
   const compressImage = useCallback(async (file: File, targetQuality: number): Promise<File> => {
+    console.log('🔄 Starting compression:', {
+      filename: file.name,
+      originalSize: (file.size / 1024).toFixed(2) + 'KB',
+      targetQuality: (targetQuality * 100).toFixed(0) + '%',
+      fileType: file.type
+    });
+
+    // For very high quality (>90%), use minimal compression to avoid size increase
+    if (targetQuality > 0.9) {
+      const options = {
+        maxSizeMB: file.size / (1024 * 1024) * 0.95, // Only 5% reduction
+        maxWidthOrHeight: 4096,
+        useWebWorker: true,
+        initialQuality: 0.95,
+        maxIteration: 5,
+        preserveExif: false,
+      };
+
+      try {
+        const compressedFile = await imageCompression(file, options);
+        if (compressedFile.size < file.size) {
+          console.log('✅ High quality compression successful');
+          return compressedFile;
+        }
+      } catch {
+        console.warn('High quality compression failed, trying alternative');
+      }
+    }
+
+    // Standard compression approach
+    const originalSizeMB = file.size / (1024 * 1024);
+
+    // Use a more aggressive size target for lower qualities
+    let targetSizeMB;
+    if (targetQuality <= 0.5) {
+      targetSizeMB = originalSizeMB * targetQuality * 0.6; // Very aggressive
+    } else if (targetQuality <= 0.7) {
+      targetSizeMB = originalSizeMB * targetQuality * 0.75; // Moderate
+    } else {
+      targetSizeMB = originalSizeMB * targetQuality * 0.85; // Conservative
+    }
+
+    targetSizeMB = Math.max(0.05, targetSizeMB); // Minimum 50KB
+
     const options = {
-      maxSizeMB: 10,
+      maxSizeMB: targetSizeMB,
       maxWidthOrHeight: 4096,
       useWebWorker: true,
-      quality: targetQuality,
+      initialQuality: targetQuality,
+      maxIteration: 25,
+      preserveExif: false,
+      fileType: file.type,
     };
 
     try {
       const compressedFile = await imageCompression(file, options);
-      return compressedFile;
+      const compressionRatio = ((file.size - compressedFile.size) / file.size) * 100;
+
+      console.log('📊 Compression result:', {
+        originalSize: (file.size / 1024).toFixed(2) + 'KB',
+        compressedSize: (compressedFile.size / 1024).toFixed(2) + 'KB',
+        compressionRatio: compressionRatio.toFixed(1) + '%',
+        targetQuality: (targetQuality * 100).toFixed(0) + '%',
+        targetSizeMB: targetSizeMB.toFixed(2) + 'MB'
+      });
+
+      // Return compressed file even if slightly larger (within 5%) to show the quality effect
+      if (compressedFile.size <= file.size * 1.05) {
+        return compressedFile;
+      } else {
+        console.warn('⚠️ Compression increased file size significantly, returning original');
+        return file;
+      }
     } catch (error) {
-      console.error('Compression error:', error);
+      console.error('❌ Compression error:', error);
       throw error;
     }
   }, []);
@@ -93,6 +156,15 @@ export function ImageCompressor({ files, onRemoveFile, onClearAll }: ImageCompre
             const compressed = await compressImage(imageData.original, targetQuality);
             const compressionRatio = ((imageData.originalSize - compressed.size) / imageData.originalSize) * 100;
 
+            // Log detailed compression results
+            console.log('Compression completed:', {
+              filename: imageData.original.name,
+              originalSize: imageData.originalSize,
+              compressedSize: compressed.size,
+              compressionRatio: compressionRatio.toFixed(2) + '%',
+              quality: (targetQuality * 100).toFixed(0) + '%'
+            });
+
             return {
               ...imageData,
               compressed,
@@ -101,7 +173,8 @@ export function ImageCompressor({ files, onRemoveFile, onClearAll }: ImageCompre
               isProcessing: false,
               error: undefined,
             };
-          } catch {
+          } catch (error) {
+            console.error('Compression failed for', imageData.original.name, error);
             return {
               ...imageData,
               isProcessing: false,
@@ -250,6 +323,9 @@ export function ImageCompressor({ files, onRemoveFile, onClearAll }: ImageCompre
           <div className="flex-1">
             <label className="block text-sm font-medium text-foreground mb-2">
               {t('compress.qualityLabel')}: {Math.round(quality * 100)}%
+              <span className="text-xs text-muted-foreground ml-2">
+                (Target: {quality <= 0.5 ? 'Very Aggressive' : quality <= 0.7 ? 'Moderate' : 'Conservative'} compression)
+              </span>
             </label>
             <div className="flex items-center gap-3">
               {/* Slider */}
@@ -415,15 +491,47 @@ export function ImageCompressor({ files, onRemoveFile, onClearAll }: ImageCompre
                 <h3 className="text-sm font-medium text-foreground truncate">
                   {imageData.original.name}
                 </h3>
-                <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                  <span>{formatFileSize(imageData.originalSize)}</span>
-                  <span>→</span>
-                  <span>{imageData.compressed ? formatFileSize(imageData.compressedSize) : '...'}</span>
-                  {imageData.compressionRatio > 0 && (
-                    <span className="text-green-600 font-medium">
-                      -{imageData.compressionRatio.toFixed(1)}%
-                    </span>
-                  )}
+                <div className="flex items-center mt-2">
+                  {/* File size change and compression ratio - grouped together */}
+                  <div className="flex items-center gap-3 text-sm flex-1">
+                    {/* File size change */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground font-medium">{formatFileSize(imageData.originalSize)}</span>
+                      <span className="text-muted-foreground">→</span>
+                      <span className={`font-semibold ${
+                        imageData.compressed ? 'text-green-600' : 'text-muted-foreground'
+                      }`}>
+                        {imageData.compressed ? formatFileSize(imageData.compressedSize) : '...'}
+                      </span>
+                    </div>
+
+                    {/* Compression ratio - close to file size */}
+                    {imageData.compressionRatio > 0 && !imageData.isProcessing && !imageData.error && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-600">✅</span>
+                        <span className="text-green-600 font-semibold">
+                          -{imageData.compressionRatio.toFixed(1)}%
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Status indicators - right aligned */}
+                  <div className="flex items-center gap-1 text-sm">
+                    {imageData.isProcessing && (
+                      <>
+                        <span className="text-blue-600">⏳</span>
+                        <span className="text-blue-600 font-medium">Processing...</span>
+                      </>
+                    )}
+
+                    {imageData.error && (
+                      <>
+                        <span className="text-red-600">❌</span>
+                        <span className="text-red-600 font-medium">Failed</span>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 
