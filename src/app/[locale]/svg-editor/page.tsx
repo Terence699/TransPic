@@ -25,24 +25,26 @@ export default function SvgEditorPage() {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-16 md:py-24">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+        <div className="text-center mb-12 animate-fade-in-up">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
             {t('svgEditor.title')}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {t('svgEditor.description')}
           </p>
         </div>
 
         {/* SVG Editor */}
-        <div className="max-w-6xl mx-auto">
-          <SvgEditor
-            svgCode={svgCode}
-            onSvgCodeChange={setSvgCode}
-            onFileUpload={handleFileUpload}
-          />
+        <div className="max-w-6xl mx-auto animate-fade-in-up delay-100">
+          <div className="shadow-xl rounded-2xl overflow-hidden bg-card border border-border/50">
+            <SvgEditor
+              svgCode={svgCode}
+              onSvgCodeChange={setSvgCode}
+              onFileUpload={handleFileUpload}
+            />
+          </div>
         </div>
       </div>
     </MainLayout>

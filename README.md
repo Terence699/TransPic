@@ -4,6 +4,7 @@ TransPic 是一个基于 Next.js 15 构建的现代化图片处理 Web 应用，
 
 ## 🆕 最新更新
 
+- **🎨 品牌视觉升级**：更新了应用logo和favicon，提升品牌识别度
 - **📈 文件大小限制提升**：从 10MB 提升至 25MB，更好支持高分辨率图片处理
 - **📄 PDF转图片功能**：新增 PDF 文件转换为图片格式的功能，支持页码选择
 - **🎯 用户体验优化**：针对桌面浏览器用户进行性能优化
@@ -88,6 +89,7 @@ src/
 │   │   ├── resize/        # 尺寸调整页面
 │   │   ├── convert/       # 格式转换页面
 │   │   └── svg-editor/    # SVG编辑器页面
+│   ├── favicon.ico        # 网站图标
 │   ├── globals.css        # 全局样式
 │   └── layout.tsx         # 根布局
 ├── components/            # React 组件
@@ -97,6 +99,14 @@ src/
 ├── lib/                  # 工具函数
 ├── messages/             # 国际化文件
 └── types/                # TypeScript 类型定义
+
+public/
+├── logo.png              # 原始logo文件
+├── logo-32.png           # 32x32 导航栏logo
+├── logo-64.png           # 64x64 中等尺寸logo
+├── logo-128.png          # 128x128 大尺寸logo
+├── logo-256.png          # 256x256 高清logo
+└── logo-cropped.png      # 裁剪后的logo
 ```
 
 ## 🌍 国际化支持
@@ -152,6 +162,12 @@ src/
 - 类型定义在 `src/types/`
 - 严格的类型检查确保代码质量
 
+### Logo 和品牌资源
+- 原始logo文件：`public/logo.png`
+- 多尺寸logo文件：`public/logo-{32,64,128,256}.png`
+- Favicon：`src/app/favicon.ico`
+- 导航栏使用Next.js Image组件优化加载性能
+
 ## 🐛 已知问题
 
 - ✅ 修复了图片压缩的无限重渲染循环问题
@@ -180,6 +196,12 @@ style={{
 - 直接使用设计系统的CSS变量确保一致性
 
 ## 📝 更新日志
+
+### v1.1.0 (2025-06-25)
+- 🎨 更新应用logo和favicon，提升品牌视觉效果
+- 🔧 使用Next.js Image组件优化logo加载性能
+- 📦 生成多尺寸logo文件以适配不同使用场景
+- ✅ 修复ESLint警告，提升代码质量
 
 ### v1.0.0 (2024-06-24)
 - ✨ 实现图片压缩功能

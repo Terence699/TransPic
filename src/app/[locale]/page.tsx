@@ -42,65 +42,74 @@ export default function HomePage() {
 
   return (
     <MainLayout>
-      <div className="bg-background">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4" style={{ color: 'hsl(var(--foreground))' }}>
-            {t('home.title')}
-          </h1>
-          <p className="text-xl mb-6" style={{ color: 'hsl(var(--foreground))' }}>
-            {t('home.subtitle')}
-          </p>
-          <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            {t('home.description')}
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-          {features.map((feature) => (
-            <Link
-              key={feature.href}
-              href={feature.href}
-              className="group rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border hover:border-gray-300"
-              style={{
-                backgroundColor: 'hsl(var(--card))',
-                borderColor: 'hsl(var(--border))',
-              }}
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-center">
+        
+        <div className="container mx-auto px-4 py-20 lg:py-32">
+          {/* Hero Section */}
+          <div className="text-center mb-20 max-w-3xl mx-auto">
+            <h1 
+              className="text-5xl md:text-6xl font-bold mb-6 tracking-tight animate-fade-in-up" 
+              style={{ color: 'hsl(var(--foreground))' }}
             >
-              <div className="flex flex-col items-center text-center">
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors shadow-sm border"
-                  style={{
-                    backgroundColor: 'hsl(var(--muted))',
-                    borderColor: 'hsl(var(--border))',
-                  }}
-                >
-                  <feature.icon
-                    className="w-6 h-6"
-                    style={{ color: 'hsl(var(--primary))' }}
-                  />
+              {t('home.title')}
+            </h1>
+            <p 
+              className="text-xl md:text-2xl mb-8 animate-fade-in-up delay-100 leading-relaxed" 
+              style={{ color: 'hsl(var(--muted-foreground))' }}
+            >
+              {t('home.subtitle')}
+            </p>
+            <p 
+              className="text-lg animate-fade-in-up delay-200"
+              style={{ color: 'hsl(var(--muted-foreground))' }}
+            >
+              {t('home.description')}
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Link
+                key={feature.href}
+                href={feature.href}
+                className="group relative rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-fade-in-up"
+                style={{
+                  backgroundColor: 'hsl(var(--card))',
+                  animationDelay: `${(index + 3) * 100}ms`
+                }}
+              >
+                {/* Card Hover Gradient Border/Glow effect could go here */}
+                
+                <div className="flex flex-col items-center text-center h-full">
+                  <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                    style={{
+                      backgroundColor: 'hsl(var(--primary) / 0.1)',
+                      color: 'hsl(var(--primary))',
+                    }}
+                  >
+                    <feature.icon className="w-8 h-8" />
+                  </div>
+                  
+                  <h3
+                    className="text-xl font-semibold mb-3"
+                    style={{ color: 'hsl(var(--foreground))' }}
+                  >
+                    {feature.title}
+                  </h3>
+                  
+                  <p
+                    className="text-base leading-relaxed"
+                    style={{ color: 'hsl(var(--muted-foreground))' }}
+                  >
+                    {feature.description}
+                  </p>
                 </div>
-                <h3
-                  className="text-lg font-semibold mb-2"
-                  style={{ color: 'hsl(var(--foreground))' }}
-                >
-                  {feature.title}
-                </h3>
-                <p
-                  className="text-sm"
-                  style={{ color: 'hsl(var(--muted-foreground))' }}
-                >
-                  {feature.description}
-                </p>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
-
-
-      </div>
       </div>
     </MainLayout>
   );

@@ -24,36 +24,38 @@ export default function CompressPage() {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-16 md:py-24">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+        <div className="text-center mb-12 animate-fade-in-up">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
             {t('compress.title')}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {t('compress.description')}
           </p>
         </div>
 
         {/* File Upload */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto animate-fade-in-up delay-100">
           <FileUpload
             onFilesSelected={handleFilesSelected}
             acceptedTypes={['image/jpeg', 'image/png', 'image/webp']}
             maxFileSize={25}
             multiple={true}
-            className="mb-8"
+            className="mb-12 shadow-sm hover:shadow-md transition-shadow duration-300"
             files={selectedFiles}
             onRemoveFile={handleRemoveFile}
           />
 
           {/* Image Compressor */}
           {selectedFiles.length > 0 && (
-            <ImageCompressor
-              files={selectedFiles}
-              onRemoveFile={handleRemoveFile}
-              onClearAll={handleClearAll}
-            />
+            <div className="animate-fade-in-up">
+              <ImageCompressor
+                files={selectedFiles}
+                onRemoveFile={handleRemoveFile}
+                onClearAll={handleClearAll}
+              />
+            </div>
           )}
         </div>
       </div>
